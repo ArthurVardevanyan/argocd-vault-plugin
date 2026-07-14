@@ -15,6 +15,15 @@ import (
 	"github.com/argoproj-labs/argocd-vault-plugin/pkg/utils"
 )
 
+// Isolate the token cache directory from other test packages running in parallel.
+func init() {
+	dir, err := os.MkdirTemp("", "avp-home-")
+	if err != nil {
+		panic(err)
+	}
+	os.Setenv("HOME", dir)
+}
+
 func writeToken(identifier string, token string) error {
 	home, err := os.UserHomeDir()
 	if err != nil {
