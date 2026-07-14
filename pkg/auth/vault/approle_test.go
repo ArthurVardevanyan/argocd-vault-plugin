@@ -3,12 +3,24 @@ package vault_test
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/argoproj-labs/argocd-vault-plugin/pkg/auth/vault"
-	"github.com/argoproj-labs/argocd-vault-plugin/pkg/utils"
 	"github.com/argoproj-labs/argocd-vault-plugin/pkg/helpers"
+	"github.com/argoproj-labs/argocd-vault-plugin/pkg/utils"
 )
+
+// Isolate the token cache directory from other test packages running in parallel.
+// Each test binary gets its own HOME so PurgeTokenCache in cmd tests cannot race
+// with SetToken/ReadExistingToken calls here.
+func init() {
+	dir, err := os.MkdirTemp("", "avp-home-")
+	if err != nil {
+		panic(err)
+	}
+	os.Setenv("HOME", dir)
+}
 
 func TestAppRoleLogin(t *testing.T) {
 	cluster, roleID, secretID := helpers.CreateTestAppRoleVault(t)

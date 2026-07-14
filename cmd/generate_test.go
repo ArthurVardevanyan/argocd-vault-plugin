@@ -14,6 +14,17 @@ import (
 	"github.com/hashicorp/vault/vault"
 )
 
+// Isolate the token cache directory from other test packages running in parallel.
+// Each test binary gets its own HOME so PurgeTokenCache calls here cannot race
+// with SetToken/ReadExistingToken calls in pkg/auth/vault tests.
+func init() {
+	dir, err := os.MkdirTemp("", "avp-home-")
+	if err != nil {
+		panic(err)
+	}
+	os.Setenv("HOME", dir)
+}
+
 var roleid, secretid string
 var cluster *vault.TestCluster
 var client *api.Client
