@@ -47,6 +47,10 @@ func (m mockYCLPayloadServiceClient) Get(_ context.Context, in *lockbox.GetPaylo
 	return payload, nil
 }
 
+func (m mockYCLPayloadServiceClient) GetEx(_ context.Context, _ *lockbox.GetExRequest, _ ...grpc.CallOption) (*lockbox.GetExResponse, error) {
+	return nil, nil
+}
+
 func TestYandexCloudLockbox_GetIndividualSecret(t *testing.T) {
 	client := newMockYCLPayloadServiceClient()
 	client.setSecret("abc", "def", "", "1")

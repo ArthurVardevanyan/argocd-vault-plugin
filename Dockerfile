@@ -1,4 +1,4 @@
-FROM index.docker.io/golang:1.22.7
+FROM index.docker.io/golang:1.26.5
 
 ADD go.mod go.mod
 ADD go.sum go.sum
