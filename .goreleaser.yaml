@@ -3,7 +3,8 @@ project_name: "argocd-vault-plugin"
 
 builds:
   - binary: "argocd-vault-plugin"
-    flags: "-trimpath"
+    flags:
+      - "-trimpath"
     ldflags: >-
       -s -w
       -X "github.com/argoproj-labs/argocd-vault-plugin/version.Version={{.Tag}}"
@@ -26,7 +27,8 @@ builds:
       - static_build
 
 archives:
-  - format: binary
+  - formats:
+      - binary
 
 changelog:
   disable: true
